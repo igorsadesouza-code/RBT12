@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Receita Bruta Acumulada</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <main class="app-container">
+
+        <section class="card">
+
+            <h1>Conversor de PDFs para TXT</h1>
+
+            <!-- ÁREA DE MENSAGENS DO FLASK -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="mensagens">
+                        {% for message in messages %}
+                            <div class="mensagem">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- STATUS VISUAL -->
+            <div class="status-box">
+                <p id="statusTexto">Aguardando seleção dos arquivos...</p>
+
+                <div class="progress-container">
+                    <div id="barraProgresso" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- FORMULÁRIO PRINCIPAL: GERAR TXT -->
+            <form 
+                id="formGerarTxt"
+                class="formulario"
+                action="/gerar-txt"
+                method="post"
+                enctype="multipart/form-data"
+            >
+
+                <h2>Gerar Arquivo de Importação DOMÍNIO</h2>
+
+                <div class="campo">
+                    <label>Selecione o tipo de faturamento</label>
+
+                    <div class="radio-group">
+
+                        <!-- Se quiser reativar o Modo 1 depois, basta remover o disabled -->
+                        <label class="radio-option disabled">
+                            <input type="radio" name="modo" value="1" disabled>
+                            Carta de Faturamento G5 Contimact
+                        </label>
+
+                        <label class="radio-option">
+                            <input type="radio" name="modo" value="2" checked>
+                            DECLARAÇÃO/EXTRATO PGDAS - RBT12
+                        </label>
+
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label for="pdfs">Importar Declarações/Extratos</label>
+
+                    <input 
+                        type="file"
+                        id="pdfs"
+                        name="pdfs"
+                        accept=".pdf"
+                        multiple
+                        required
+                    >
+
+                    <small id="infoPdfs">Nenhum arquivo selecionado.</small>
+                </div>
+
+                <button type="submit" class="botao-principal">
+                    Gerar Arquivo de Importação DOMÍNIO
+                </button>
+
+            </form>
+
+            <!-- FORMULÁRIO: RENOMEAR ARQUIVOS -->
+            <form 
+                id="formRenomear"
+                class="formulario"
+                action="/renomear"
+                method="post"
+                enctype="multipart/form-data"
+            >
+
+                <h2>Renomear Arquivos</h2>
+
+                <div class="campo">
+                    <label for="excel">Selecione a planilha de empresas</label>
+
+                    <input 
+                        type="file"
+                        id="excel"
+                        name="excel"
+                        accept=".xls,.xlsx"
+                        required
+                    >
+
+                    <small>
+                        Formato esperado: código na coluna A, CNPJ/CPF na coluna C, dados a partir da linha 5.
+                    </small>
+                </div>
+
+                <div class="campo">
+                    <label for="pdfsRenomear">Selecione os PDFs para renomear</label>
+
+                    <input 
+                        type="file"
+                        id="pdfsRenomear"
+                        name="pdfs_renomear"
+                        accept=".pdf"
+                        multiple
+                        required
+                    >
+
+                    <small id="infoPdfsRenomear">Nenhum arquivo selecionado.</small>
+                </div>
+
+                <button type="submit" class="botao-principal">
+                    Renomear Arquivos
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
